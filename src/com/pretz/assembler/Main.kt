@@ -6,14 +6,8 @@ fun main(args: Array<String>) {
 
     File(args[0].validate()).useLines { AsmParser().parse(it) }
 
-    //TODO 2. parse file lines into assembly language commands
     //TODO 3. translate assembly language commands into machine language
     //TODO 4. modify program to handle symbols
-}
-
-// debug function
-fun printLines(lines: Sequence<String>) {
-    lines.forEach { println(it) }
 }
 
 fun String.validate() =
