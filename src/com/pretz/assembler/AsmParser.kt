@@ -1,7 +1,7 @@
 package com.pretz.assembler
 
 class AsmParser {
-    fun parse(lines: Sequence<String>) =
+    fun parse(lines: List<String>) =
         lines.filterNot { isWhitespace(it) }
             .map { trimTrailingWhitespaces(it) }
             .map { parseToCommand(it) }
