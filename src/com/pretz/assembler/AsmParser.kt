@@ -3,11 +3,15 @@ package com.pretz.assembler
 class AsmParser {
     fun parse(lines: Sequence<String>) =
         lines.filterNot { isWhitespace(it) }
+            .map { trimTrailingWhitespaces(it) }
             .map { parseToCommand(it) }
-            .forEach { println(it) }
+
+    private fun isWhitespace(line: String) =
+        line.matches(Regex("^//.*")) || line.isBlank()
+
+    private fun trimTrailingWhitespaces(line: String) = line.substringBeforeLast("//").trim()
 
     private fun parseToCommand(line: String) =
-        //TODO cut additional comment at the end of line
         when {
             line.matches(Regex("^@.*")) -> parseToACommand(line)
             //TODO line matches symbol - to be implemented
@@ -23,9 +27,6 @@ class AsmParser {
         val jump = line.substringAfterLast(';', String())
         return CCommand(dest, comp, jump)
     }
-
-    private fun isWhitespace(line: String) =
-        line.matches(Regex("^//.*")) || line.isBlank()
 
     // debug function
     fun printLines(lines: Sequence<String>) {

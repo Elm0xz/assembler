@@ -4,7 +4,8 @@ import java.io.File
 
 fun main(args: Array<String>) {
 
-    File(args[0].validate()).useLines { AsmParser().parse(it) }
+    File(args[0].validate())
+        .useLines { AsmParser().parse(it) }
 
     //TODO 3. translate assembly language commands into machine language
     //TODO 4. modify program to handle symbols
