@@ -1,6 +1,7 @@
 package com.pretz.assembler
 
 class CodeTranslator {
+
     fun translate(commands: List<Command>) =
         commands.map { translate(it) }
 
@@ -32,12 +33,12 @@ class CodeTranslator {
     private fun comp(comp: String) =
         Fields.comp[comp]
 
-    private fun dest(dest: String?) =
+    private fun dest(dest: String) =
         if (dest == "") "000"
         else
             Fields.dest[dest]
 
-    private fun jump(jump: String?) =
+    private fun jump(jump: String) =
         if (jump == "") "000"
         else
             Fields.jump[jump]

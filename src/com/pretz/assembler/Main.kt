@@ -13,7 +13,7 @@ fun main(args: Array<String>) {
     //TODO 4. modify program to handle symbols
 }
 
-fun String.validate() =
+private fun String.validate() =
     if (!this.matches(Regex(".*\\.asm\$")))
         throw IllegalArgumentException("Wrong file extension - only .asm files are allowed")
     else this
