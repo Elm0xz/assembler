@@ -15,11 +15,12 @@ class AsmParser {
     private fun parseToCommand(line: String) =
         when {
             line.matches(Regex("^@.*")) -> parseToACommand(line)
-            //TODO line matches symbol - to be implemented
             else -> parseToCCommand(line)
         }
 
     private fun parseToACommand(line: String) =
+        //TODO if address is symbol present in table, translate it according to symbol table
+        //TODO if address in symbol not present in table, add it to table with next number (starting at address 16)
         ACommand(line.substring(1))
 
     private fun parseToCCommand(line: String): CCommand {
