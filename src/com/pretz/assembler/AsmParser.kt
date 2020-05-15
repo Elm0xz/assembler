@@ -2,13 +2,19 @@ package com.pretz.assembler
 
 class AsmParser {
 
+    private var varCount = 16
+
     fun parse(lines: List<String>) =
-        lines.filterNot { isWhitespace(it) }
+        lines.filterNot { isWhitespaceOrSymbol(it) }
             .map { trimTrailingWhitespace(it) }
             .map { parseToCommand(it) }
 
     private fun isWhitespace(line: String) =
         line.matches(Regex("^//.*")) || line.isBlank()
+
+    private fun isWhitespaceOrSymbol(line: String) =
+        line.matches(Regex("^//.*")) || line.isBlank()
+                || line.matches(Regex("^\\(.*"))
 
     private fun trimTrailingWhitespace(line: String) = line.substringBeforeLast("//").trim()
 
@@ -19,9 +25,21 @@ class AsmParser {
         }
 
     private fun parseToACommand(line: String) =
-        //TODO if address is symbol present in table, translate it according to symbol table
-        //TODO if address in symbol not present in table, add it to table with next number (starting at address 16)
-        ACommand(line.substring(1))
+        ACommand(convertLabelToAddress(line))
+
+    private fun convertLabelToAddress(line: String) =
+        if (isLabel(line))
+            convertToAddress(line)
+        else line.substring(1)
+
+    private fun isLabel(line: String) =
+        !line[1].isDigit()
+
+    private fun convertToAddress(line: String): String {
+        if (!SymbolTable.symbolTable.containsKey(line.substring(1)))
+            SymbolTable.symbolTable[line.substring(1)] = varCount++
+        return SymbolTable.symbolTable[line.substring(1)].toString()
+    }
 
     private fun parseToCCommand(line: String): CCommand {
         val dest = line.substringBeforeLast('=', String())
