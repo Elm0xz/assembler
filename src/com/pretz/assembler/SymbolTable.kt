@@ -32,19 +32,12 @@ class SymbolTable {
         fun addCustom(lines: List<String>) {
             var count = 0
             for (line in lines) {
-                if (!isWhitespaceOrSymbol(line)) count++
-                else if (isSymbol(line)) {
+                if (!line.isWhitespaceOrSymbol()) count++
+                else if (line.isSymbol()) {
                     symbolTable.putIfAbsent(symbolFrom(line), count)
                 }
             }
         }
-
-        private fun isWhitespaceOrSymbol(line: String) =
-            line.matches(Regex("^//.*")) || line.isBlank()
-                    || line.matches(Regex("^\\(.*"))
-
-        private fun isSymbol(line: String) =
-            line.matches(Regex("^\\(.*"))
 
         private fun symbolFrom(line: String) =
             line.substringAfterLast('(').substringBeforeLast(')')

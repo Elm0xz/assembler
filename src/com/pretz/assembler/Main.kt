@@ -5,12 +5,14 @@ import java.io.File
 
 fun main(args: Array<String>) {
 
-    File(args[0].validate())
+    val inputFileName = args[0]
+
+    File(inputFileName.validate())
         .readLines()
         .also { SymbolTable.addCustom(it) }
         .let { AsmParser().parse(it) }
         .let { CodeTranslator().translate(it) }
-        .let { File(outputFileName(args[0])).bufferedWriter().use { out -> printToFile(it, out) } }
+        .let { File(outputFileNameFrom(inputFileName)).bufferedWriter().use { out -> printToFile(it, out) } }
 }
 
 private fun String.validate() =
@@ -18,11 +20,11 @@ private fun String.validate() =
         throw IllegalArgumentException("Wrong file extension - only .asm files are allowed")
     else this
 
-private fun outputFileName(inputFileName: String) =
+private fun outputFileNameFrom(inputFileName: String) =
     inputFileName.substringBeforeLast('.') + "1.hack"
 
-private fun printToFile(code: List<String>, out: BufferedWriter) =
-    code.forEach { printLine(out, it) }
+private fun printToFile(machineCode: List<String>, out: BufferedWriter) =
+    machineCode.forEach { printLine(out, it) }
 
 private fun printLine(out: BufferedWriter, line: String) =
     out.write(line + "\n")
